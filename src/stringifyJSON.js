@@ -5,10 +5,17 @@
 
 
 var stringifyJSON = function (obj) {
-  console.log(typeof obj);
+  console.log(obj);
+  //this is what we do to non-objects
   if (obj === null) {
-      return "null";
-    }
+    return "null";
+  }
+  if (obj === undefined) {
+    return "";
+  }
+  if (typeof obj === 'function') {
+    return "";
+  }
   if (typeof obj !== 'object') {
     if (typeof obj === 'string') {
       return "\"" + obj + "\"";
@@ -17,12 +24,19 @@ var stringifyJSON = function (obj) {
       return obj.toString();
     }
   } else if (typeof obj === 'object') {
-    console.log("This is an object");
-
+    //this is what we do if it's an object
+    console.log("This is an array or an object");
+      //this is a recursive function that returns elements within 
+      //objects as strings
       var stringifyProperties = function (obj) {
+        //this is what happens if the object is an array
+        //this is accessed when object is object
+
         if (Array.isArray(obj)) {
+          console.log("Access Point 1");
           var test = "";
           for (var i = 0; i < obj.length; i++) {
+            console.log("Access Point 2");
             if (i === obj.length - 1) {
               test += stringifyJSON(obj[i]);
             } else {
@@ -30,31 +44,122 @@ var stringifyJSON = function (obj) {
             }
             console.log("Recursion result: " + stringifyJSON(obj[i]));
           }
+        console.log("Access Point 3");
         return(test);
         
-        }
-        for (var key in obj) { //work on obj syntax
-        	  var test = "";
+        //this is what happens if the object is an object
+        } else {
+          var test = "";
+          var counter = 0; 
+          var countElements = function(obj) {
+            var size = 0, key;
+              for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+                }
+                return size;
+            };
+          var length = countElements(obj);
           for (var key in obj) {
-            if (i === obj.length - 1) {
-              test += stringifyJSON(obj.i);
+            if (stringifyJSON(obj[key]) !== "") {
+              test += stringifyJSON(key);
+              test += ":";
+              test += stringifyJSON(obj[key]);
+              counter++;
+              if (counter<length) {
+                test += ",";
+              }
             } else {
-              test += stringifyJSON(obj.i) + ",";
+              test += "";
+              counter++;
             }
-            console.log("Recursion result: " + stringifyJSON(obj.i));
           }
-        return(test);
         }
+        return test;
       };
 
     if (Array.isArray(obj)) {
       return "[" + stringifyProperties(obj) + "]";
     } else {
+      //this is being accessed 
       return "{" + stringifyProperties(obj) + "}";   
     }
 
   }
 };
+
+
+// var stringifyJSON = function (obj) {
+//   console.log(typeof obj);
+//   //this is what we do to non-objects
+//   if (obj === null) {
+//       return "null";
+//     }
+//   if (obj === undefined) {
+//     return;
+//   }
+//   if (typeof obj !== 'object') {
+//     if (typeof obj === 'string') {
+//       return "\"" + obj + "\"";
+//     }
+//     if (typeof obj === 'number' || 'boolean') {
+//       return obj.toString();
+//     }
+//   } else if (typeof obj === 'object') {
+//     //this is what we do if it's an object
+//     //console.log("This is an array or an object");
+//       //this is a recursive function that returns elements within 
+//       //objects as strings
+//       var stringifyProperties = function (obj) {
+//         //this is what happens if the object is an array
+//         //this is accessed when object is object
+
+//         if (Array.isArray(obj)) {
+//           console.log("Access Point 1");
+//           var test = "";
+//           for (var i = 0; i < obj.length; i++) {
+//             console.log("Access Point 2");
+//             if (i === obj.length - 1) {
+//               test += stringifyJSON(obj[i]);
+//             } else {
+//               test += stringifyJSON(obj[i]) + ",";
+//             }
+//             console.log("Recursion result: " + stringifyJSON(obj[i]));
+//           }
+//         console.log("Access Point 3");
+//         return(test);
+        
+//         //this is what happens if the object is an object
+//         } else if (obj) {
+//           //this is being accessed
+//         var test = "";
+//         for (var key in obj) { 
+//             console.log("Access Point 4");     
+//           for (var key in obj) {
+//             if (i === obj.length - 1) {
+//               test += stringifyJSON(obj.i);
+//             } else {
+//               test += stringifyJSON(obj.i) + ",";
+//             }
+//             console.log("Recursion result: " + stringifyJSON(obj.i));
+//           }
+//           console.log("Access Point 5");
+//           return(test);
+//         }
+//         } else {
+//           console.log("Access Point 6");
+//           return test;
+//         };
+//       };
+
+//     if (Array.isArray(obj)) {
+//       return "[" + stringifyProperties(obj) + "]";
+//     } else {
+//       //this is being accessed 
+//       return "{" + stringifyProperties(obj) + "}";   
+//     }
+
+//   }
+// };
 
 
 
