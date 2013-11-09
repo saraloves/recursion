@@ -5,7 +5,6 @@
 
 
 var stringifyJSON = function (obj) {
-  console.log(obj);
   //this is what we do to non-objects
   if (obj === null) {
     return "null";
@@ -25,7 +24,6 @@ var stringifyJSON = function (obj) {
     }
   } else if (typeof obj === 'object') {
     //this is what we do if it's an object
-    console.log("This is an array or an object");
       //this is a recursive function that returns elements within 
       //objects as strings
       var stringifyProperties = function (obj) {
@@ -33,18 +31,14 @@ var stringifyJSON = function (obj) {
         //this is accessed when object is object
 
         if (Array.isArray(obj)) {
-          console.log("Access Point 1");
           var test = "";
           for (var i = 0; i < obj.length; i++) {
-            console.log("Access Point 2");
             if (i === obj.length - 1) {
               test += stringifyJSON(obj[i]);
             } else {
               test += stringifyJSON(obj[i]) + ",";
             }
-            console.log("Recursion result: " + stringifyJSON(obj[i]));
           }
-        console.log("Access Point 3");
         return(test);
         
         //this is what happens if the object is an object
